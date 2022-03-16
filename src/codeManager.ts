@@ -424,9 +424,14 @@ export class CodeManager implements vscode.Disposable {
                 command = command
                     .replace(/([A-Za-z]):\\/g, (match, p1) => `${terminalRoot}${p1.toLowerCase()}/`)
                     .replace(/\\/g, "/");
-            } else if (windowsShell && windowsShell.toLowerCase().indexOf("bash") > -1 && windowsShell.toLowerCase().indexOf("windows") > -1) {
-                command = command.replace(/([A-Za-z]):\\/g, this.replacer).replace(/\\/g, "/");
-            }
+            } 
+            //else if (windowsShell && windowsShell.toLowerCase().indexOf("bash") > -1 && windowsShell.toLowerCase().indexOf("windows") > -1) {
+                //command = command.replace(/([A-Za-z]):\\/g, this.replacer).replace(/\\/g, "/");}
+             
+            // 修复不能识别 wsl.exe 终端的问题
+            else if (windowsShell && windowsShell.toLowerCase().indexOf("wsl") > -1) {
+                command = command.replace(/([A-Za-z]):/g, this.replacer).replace(/\\/g,"/");}
+
         }
         return command;
     }
